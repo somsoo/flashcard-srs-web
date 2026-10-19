@@ -398,6 +398,12 @@ class="manual-ad-box ad-bottom-banner" style="width: 100%; max-width: 960px; mar
         let currentIndex = 0;
         let isFlipped = false;
 
+        function escapeHtml(str) {
+            return String(str || '').replace(/[&<>"']/g, m => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[m]));
+        }
+
         function showToast(msg) {
             const toast = document.getElementById('toastNotification');
             const toastMsg = document.getElementById('toastMessage');
@@ -455,11 +461,11 @@ class="manual-ad-box ad-bottom-banner" style="width: 100%; max-width: 960px; mar
 
             document.getElementById('cardFrontText').innerHTML = `
                 <span class="text-xs font-bold text-indigo-500 uppercase tracking-wider mb-2">QUESTION (터치하여 정답 확인)</span>
-                <h3 class="text-2xl sm:text-3xl font-black text-slate-900">${c.front}</h3>
+                <h3 class="text-2xl sm:text-3xl font-black text-slate-900">${escapeHtml(c.front)}</h3>
             `;
             document.getElementById('cardBackText').innerHTML = `
                 <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-2">ANSWER</span>
-                <div class="text-lg sm:text-xl font-extrabold text-slate-900 leading-relaxed">${c.back}</div>
+                <div class="text-lg sm:text-xl font-extrabold text-slate-900 leading-relaxed">${escapeHtml(c.back)}</div>
             `;
 
             // Reset flip
@@ -475,7 +481,7 @@ class="manual-ad-box ad-bottom-banner" style="width: 100%; max-width: 960px; mar
                 item.className = 'p-2 rounded bg-slate-50 border border-slate-100 flex items-center justify-between gap-2';
                 item.innerHTML = `
                     <div class="truncate cursor-pointer hover:text-indigo-600" onclick="goToCard(${idx})">
-                        <strong>${c.front}</strong> <span class="text-slate-400">· ${c.back}</span>
+                        <strong>${escapeHtml(c.front)}</strong> <span class="text-slate-400">· ${escapeHtml(c.back)}</span>
                     </div>
                     <button onclick="deleteCard('${c.id}')" class="text-slate-400 hover:text-rose-600 text-xs whitespace-nowrap" aria-label="삭제"><i class="fa-regular fa-trash-can"></i></button>
                 `;
